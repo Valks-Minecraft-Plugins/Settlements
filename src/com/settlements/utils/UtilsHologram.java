@@ -8,11 +8,11 @@ import org.bukkit.util.Vector;
 
 import com.settlements.Settlements;
 
-public class Hologram {
+public class UtilsHologram {
 	ArmorStand as;
 	Location location;
 	
-	public Hologram(Location loc, String name) {
+	public UtilsHologram(Location loc, String name) {
 		this.location = loc;
 		as = (ArmorStand) loc.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
 		as.setArms(false);
@@ -22,12 +22,12 @@ public class Hologram {
 		as.setCustomNameVisible(false);
 	}
 	
-	public Hologram setVisible(boolean visible) {
+	public UtilsHologram setVisible(boolean visible) {
 		as.setCustomNameVisible(visible);
 		return this;
 	}
 	
-	public Hologram move() {
+	public UtilsHologram move() {
 		final Vector to = new Vector(0, 1, 0).multiply(0.01);
 		
 		new BukkitRunnable() {

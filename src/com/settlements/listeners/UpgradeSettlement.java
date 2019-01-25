@@ -1,46 +1,42 @@
 package com.settlements.listeners;
 
-import org.bukkit.Bukkit;
+import java.util.List;
+
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.MetadataValue;
+
+import com.settlements.inventories.InventoryTownhall;
 
 public class UpgradeSettlement implements Listener {
 	@EventHandler
 	private void playerInteractEvent(PlayerInteractEvent e) {
-		if (e.getClickedBlock() == null)
+		Block b = e.getClickedBlock();
+		
+		if (b == null)
 			return;
-		if (e.getClickedBlock().getType() != Material.EMERALD_BLOCK)
+		
+		if (b.getType() != Material.EMERALD_BLOCK)
 			return;
+		
 		if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
 			return;
-		if (e.getClickedBlock().getMetadata("Owner") == null)
+		
+		List<MetadataValue> metaOwner = b.getMetadata("Owner");
+		
+		if (metaOwner == null)
 			return;
-		if (e.getClickedBlock().getMetadata("Owner").get(0).asString() != e.getPlayer().getName())
+		
+		Player p = e.getPlayer();
+		
+		if (metaOwner.get(0).asString() != p.getName())
 			return;
-
-		Inventory inv = Bukkit.createInventory(null, 9, "Settlement");
-		inv.setItem(0, new ItemStack(Material.FEATHER));
-
-		e.getPlayer().openInventory(inv);
-	}
-
-	@EventHandler
-	private void inventoryInteractEvent(InventoryClickEvent e) {
-		if (!e.getView().getTitle().equalsIgnoreCase("Settlement"))
-			return;
-		e.setCancelled(true);
-		switch (e.getSlot()) {
-		case 0:
-			e.getWhoClicked().sendMessage("Works");
-			break;
-		default:
-			break;
-		}
+	
+		p.openInventory(InventoryTownhall.townhallInventory(p));
 	}
 }

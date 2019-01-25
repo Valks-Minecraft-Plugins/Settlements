@@ -12,8 +12,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import com.settlements.Settlements;
 import com.settlements.configs.PlayerFiles;
-import com.settlements.utils.Hologram;
-import com.settlements.utils.Schematic;
+import com.settlements.utils.UtilsHologram;
+import com.settlements.utils.UtilsSchematic;
 
 public class CreateSettlement implements Listener {
 	@EventHandler
@@ -24,7 +24,7 @@ public class CreateSettlement implements Listener {
 			Player p = e.getPlayer();
 			
 			b.setMetadata("Owner", new FixedMetadataValue(Settlements.plugin, p.getName()));
-			b.setMetadata("Structure", new FixedMetadataValue(Settlements.plugin, "TOWNHALL"));
+			b.setMetadata("Structure", new FixedMetadataValue(Settlements.plugin, "Townhall"));
 			
 			PlayerFiles cm = PlayerFiles.getConfig(p);
 			FileConfiguration config = cm.getConfig();
@@ -50,10 +50,10 @@ public class CreateSettlement implements Listener {
 			
 			cm.saveConfig();
 			
-			Schematic settlement = new Schematic("townhall_1");
-			settlement.pasteSchematicV2(loc);
+			UtilsSchematic settlement = new UtilsSchematic("townhall_1");
+			settlement.pasteSchematicV2(loc, true);
 			
-			Hologram hg = new Hologram(loc.add(0.5, 0, 0.5), e.getPlayer().getName() + "'s Settlement");
+			UtilsHologram hg = new UtilsHologram(loc.add(0.5, 0, 0.5), e.getPlayer().getName() + "'s Settlement");
 			hg.setVisible(true);
 		}
 	}

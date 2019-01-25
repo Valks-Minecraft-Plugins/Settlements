@@ -3,11 +3,11 @@ package com.settlements.utils;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.world.block.BlockState;
 
-public class SchemBlock {
+public class UtilsSchemBlock {
 	private final BlockVector3 blockVector3;
 	private final BlockState blockState;
 	
-	public SchemBlock(BlockVector3 blockVector3, BlockState blockState) {
+	public UtilsSchemBlock(BlockVector3 blockVector3, BlockState blockState) {
 		this.blockVector3 = blockVector3;
 		this.blockState = blockState;
 	}

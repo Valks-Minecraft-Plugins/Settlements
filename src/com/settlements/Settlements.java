@@ -4,6 +4,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.settlements.configs.LoadPlayerFiles;
+import com.settlements.inventories.InventoryTownhall;
 import com.settlements.listeners.CreateSettlement;
 import com.settlements.listeners.UpgradeSettlement;
 
@@ -20,5 +21,7 @@ public class Settlements extends JavaPlugin {
 		pm.registerEvents(new CreateSettlement(), this);
 		pm.registerEvents(new LoadPlayerFiles(), this);
 		pm.registerEvents(new UpgradeSettlement(), this);
+		
+		pm.registerEvents(new InventoryTownhall(), this);
 	}
 }

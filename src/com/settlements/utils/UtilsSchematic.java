@@ -10,16 +10,13 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.settlements.Settlements;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.extension.platform.Capability;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
@@ -28,13 +25,11 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
-import com.sk89q.worldedit.world.block.BlockType;
-import com.sk89q.worldedit.world.registry.BlockRegistry;
 
-public class Schematic {
+public class UtilsSchematic {
 	Clipboard clipboard;
 	
-	public Schematic(String filename) {
+	public UtilsSchematic(String filename) {
 		File file = new File(Settlements.plugin.getDataFolder().toString() + "\\schematics\\" + filename + ".schem");
 		
 		ClipboardFormat format = ClipboardFormats.findByFile(file);
@@ -47,8 +42,8 @@ public class Schematic {
 		}
 	}
 	
-	public void pasteSchematicV2(Location loc) {
-		List<SchemBlock> blocks = getSchematicData(loc);
+	public void pasteSchematicV2(Location loc, boolean ignoreAir) {
+		List<UtilsSchemBlock> blocks = getSchematicData(loc, ignoreAir);
 		
 		EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(BukkitAdapter.adapt(loc.getWorld()), -1);
 		
@@ -57,12 +52,10 @@ public class Schematic {
 			
 			@Override
 			public void run() {
-				SchemBlock schemBlock = blocks.get(counter);
+				UtilsSchemBlock schemBlock = blocks.get(counter);
 				
 				try {
 					BlockVector3 position = schemBlock.getBlockVector3().subtract(clipboard.getOrigin()).add(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-					//System.out.println(clipboard.getOrigin());
-					System.out.println(position);
 					editSession.setBlock(position, schemBlock.getBlockState());
 					editSession.flushSession();
 				} catch (MaxChangedBlocksException e) {
@@ -75,14 +68,16 @@ public class Schematic {
 					cancel();
 				}
 			}
-		}.runTaskTimer(Settlements.plugin, 5, 5);
+		}.runTaskTimer(Settlements.plugin, 10, 1);
 	}
 	
-	private List<SchemBlock> getSchematicData(Location loc) {
-		List<SchemBlock> blocks = new ArrayList<SchemBlock>();
+	private List<UtilsSchemBlock> getSchematicData(Location loc, boolean ignoreAir) {
+		List<UtilsSchemBlock> blocks = new ArrayList<UtilsSchemBlock>();
 		
 		for (BlockVector3 v : clipboard.getRegion()) {
-			blocks.add(new SchemBlock(v, clipboard.getBlock(v)));
+			if (clipboard.getBlock(v).getBlockType() != BukkitAdapter.asBlockType(Material.AIR) || !ignoreAir) {
+				blocks.add(new UtilsSchemBlock(v, clipboard.getBlock(v)));
+			}
 		}
 		
 		return blocks;
