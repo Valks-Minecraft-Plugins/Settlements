@@ -11,7 +11,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.MetadataValue;
 
-import com.settlements.inventories.InventoryTownhall;
+import com.settlements.structures.StructureTownhall;
 
 public class UpgradeSettlement implements Listener {
 	@EventHandler
@@ -37,6 +37,7 @@ public class UpgradeSettlement implements Listener {
 		if (metaOwner.get(0).asString() != p.getName())
 			return;
 	
-		p.openInventory(InventoryTownhall.townhallInventory(p));
+		StructureTownhall townhall = new StructureTownhall(p, "Townhall");
+		p.openInventory(townhall.getInventory());
 	}
 }
