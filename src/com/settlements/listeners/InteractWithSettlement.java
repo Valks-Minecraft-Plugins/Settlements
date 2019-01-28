@@ -11,9 +11,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.MetadataValue;
 
-import com.settlements.structures.StructureTownhall;
+import com.settlements.GUIs.GUITownhall;
 
-public class UpgradeSettlement implements Listener {
+public class InteractWithSettlement implements Listener {
 	@EventHandler
 	private void playerInteractEvent(PlayerInteractEvent e) {
 		Block b = e.getClickedBlock();
@@ -28,16 +28,19 @@ public class UpgradeSettlement implements Listener {
 			return;
 		
 		List<MetadataValue> metaOwner = b.getMetadata("Owner");
+		List<MetadataValue> metaStructure = b.getMetadata("Structure");
 		
 		if (metaOwner == null)
 			return;
 		
 		Player p = e.getPlayer();
 		
-		if (metaOwner.get(0).asString() != p.getName())
+		if (!metaOwner.get(0).asString().equals(p.getName()))
+			return;
+		
+		if (!metaStructure.get(0).asString().equals("Townhall"))
 			return;
 	
-		StructureTownhall townhall = new StructureTownhall(p, "Townhall");
-		p.openInventory(townhall.getInventory());
+		p.openInventory(new GUITownhall(p).getInventory());
 	}
 }

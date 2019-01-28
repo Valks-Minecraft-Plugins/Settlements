@@ -5,8 +5,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.settlements.configs.LoadPlayerFiles;
 import com.settlements.listeners.CreateSettlement;
-import com.settlements.listeners.UpgradeSettlement;
-import com.settlements.structures.Inventories;
+import com.settlements.listeners.InteractWithSettlement;
+import com.settlements.listeners.Inventories;
 
 public class Settlements extends JavaPlugin {
 	public static Settlements plugin;
@@ -20,7 +20,7 @@ public class Settlements extends JavaPlugin {
 	private void registerEvents(PluginManager pm) {
 		pm.registerEvents(new CreateSettlement(), this);
 		pm.registerEvents(new LoadPlayerFiles(), this);
-		pm.registerEvents(new UpgradeSettlement(), this);
+		pm.registerEvents(new InteractWithSettlement(), this);
 		
 		pm.registerEvents(new Inventories(), this);
 	}
